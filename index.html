@@ -1,0 +1,22 @@
+<<<<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bloc de Notas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📒 Mi Bloc de Notas</h1>
+        <textarea id="nota" placeholder="Escribe tu nota aquí..."></textarea>
+        <div class="buttons">
+            <button onclick="guardarNota()">Guardar Nota</button>
+            <a href="notas.html"><button>Mis Notas</button></a>
+            <button onclick="borrarNota()">Borrar Nota</button>
+        </div>
+        <p id="mensaje"></p>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>

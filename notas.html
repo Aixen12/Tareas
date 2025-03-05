@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Notas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>📝 Mis Notas</h1>
+        <ul id="listaNotas"></ul>
+        <a href="index.html"><button>Volver</button></a>
+    </div>
+    <script>
+        function cargarNotas() {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let lista = document.getElementById("listaNotas");
+            lista.innerHTML = ""; // Limpiar antes de cargar
+            
+            notas.forEach((nota, index) => {
+                let li = document.createElement("li");
+                li.innerText = `📌 ${nota}`;
+                lista.appendChild(li);
+            });
+        }
+        
+        window.onload = cargarNotas;
+    </script>
+</body>
+</html>
