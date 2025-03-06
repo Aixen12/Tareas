@@ -55,6 +55,8 @@
         <a href="index.html"><button>Volver</button></a>
     </div>
     <script>
+        let indiceNota;
+
         function cargarNotas() {
             let notas = JSON.parse(localStorage.getItem("notas")) || [];
             let lista = document.getElementById("listaNotas");
@@ -79,6 +81,7 @@
         }
 
         function modificarNota(index) {
+            indiceNota = index;
             let notas = JSON.parse(localStorage.getItem("notas")) || [];
             let nota = notas[index];
 
@@ -91,31 +94,24 @@
                 <input type="text" id="titulo" value="${nota.titulo || ""}"><br><br>
                 <label for="texto">Texto:</label>
                 <textarea id="texto">${nota.texto}</textarea><br><br>
-                <button onclick="guardarNota(${index})">Guardar</button>
+                <button onclick="guardarNota()">Guardar</button>
                 <button onclick="cancelarModificacion()">Cancelar</button>
             `;
 
             // Agregar el formulario al documento
             document.body.appendChild(formulario);
-
-            // Función para guardar la nota modificada
-            function guardarNota(index) {
-                let nuevoTitulo = document.getElementById("titulo").value;
-                let nuevoTexto = document.getElementById("texto").value;
-
-                notas[index] = { titulo: nuevoTitulo, texto: nuevoTexto };
-                localStorage.setItem("notas", JSON.stringify(notas));
-                cargarNotas(); // Recargar las notas
-                document.body.removeChild(formulario); // Eliminar el formulario
-            }
-
-            // Función para cancelar la modificación
-            function cancelarModificacion() {
-                document.body.removeChild(formulario); // Eliminar el formulario
-            }
         }
 
-        window.onload = cargarNotas;
-    </script>
-</body>
-</html>
+        function guardarNota() {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let nuevoTitulo = document.getElementById("titulo").value;
+            let nuevoTexto = document.getElementById("texto").value;
+
+            notas[indiceNota] = { titulo: nuevoTitulo, texto: nuevoTexto };
+            localStorage.setItem("notas", JSON.stringify(notas));
+            cargarNotas(); // Recargar las notas
+            document.body.removeChild(document.getElementById("formulario-modificar")); // Eliminar el formulario
+        }
+
+        function cancelarModificacion() {
+            document.body.removeChild(document.getElementById("formulario-modificar")); //
