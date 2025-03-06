@@ -33,6 +33,15 @@
             border: 1px solid #ccc;
         }
 
+        #formulario-modificar textarea {
+            height: auto; /* Alto automático */
+            overflow-y: auto; /* Barra de desplazamiento vertical */
+            resize: vertical; /* Permite redimensionar el textarea verticalmente */
+            min-height: 100px; /* Alto mínimo */
+            max-height: 500px; /* Alto máximo */
+            white-space: pre-wrap; /* Permite espacios y saltos de línea */
+        }
+
         #formulario-modificar button {
             width: 100%;
             padding: 10px;
@@ -52,6 +61,7 @@
     <div class="container">
         <h1> Mis Notas</h1>
         <ul id="listaNotas"></ul>
+        <button onclick="nuevaNota()">Nueva Nota</button>
         <a href="index.html"><button>Volver</button></a>
     </div>
     <script>
@@ -80,12 +90,27 @@
             cargarNotas(); // Recargar las notas
         }
 
+        function nuevaNota() {
+            let formulario = document.createElement("div");
+            formulario.id = "formulario-modificar";
+            formulario.innerHTML = `
+                <h2>Nueva Nota</h2>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" value=""><br><br>
+                <label for="texto">Texto:</label>
+                <textarea id="texto"></textarea><br><br>
+                <button onclick="guardarNuevaNota()">Guardar</button>
+                <button onclick="cancelarModificacion()">Cancelar</button>
+            `;
+
+            document.body.appendChild(formulario);
+        }
+
         function modificarNota(index) {
             indiceNota = index;
             let notas = JSON.parse(localStorage.getItem("notas")) || [];
             let nota = notas[index];
 
-            // Crear un formulario para modificar la nota
             let formulario = document.createElement("div");
             formulario.id = "formulario-modificar";
             formulario.innerHTML = `
@@ -96,10 +121,20 @@
                 <textarea id="texto">${nota.texto}</textarea><br><br>
                 <button onclick="guardarNota()">Guardar</button>
                 <button onclick="cancelarModificacion()">Cancelar</button>
-            `;
+            `;            
 
-            // Agregar el formulario al documento
             document.body.appendChild(formulario);
+        }
+
+        function guardarNuevaNota() {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let nuevoTitulo = document.getElementById("titulo").value;
+            let nuevoTexto = document.getElementById("texto").value;
+
+            notas.push({ titulo: nuevoTitulo, texto: nuevoTexto });
+            localStorage.setItem("notas", JSON.stringify(notas));
+            cargarNotas(); // Recargar las notas
+            document.body.removeChild(document.getElementById("formulario-modificar")); // Eliminar el formulario
         }
 
         function guardarNota() {
@@ -114,4 +149,10 @@
         }
 
         function cancelarModificacion() {
-            document.body.removeChild(document.getElementById("formulario-modificar")); //
+            document.body.removeChild(document.getElementById("formulario-modificar")); // Eliminar el formulario
+        }
+
+        window.onload = cargarNotas;
+    </script>
+</body>
+</html>
