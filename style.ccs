@@ -66,3 +66,44 @@ li {
     border-radius: 5px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
 }
+#formulario-modificar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #f0f0f0;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+#formulario-modificar h2 {
+  margin-top: 0;
+}
+
+#formulario-modificar label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+#formulario-modificar input, #formulario-modificar textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+}
+
+#formulario-modificar button {
+  width: 100%;
+  padding: 10px;
+  background-color: #4CAF50;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#formulario-modificar button:hover {
+  background-color: #3e8e41;
+}
