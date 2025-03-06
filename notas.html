@@ -3,29 +3,64 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mis Notas</title>
-    <link rel="stylesheet" href="style.css">
+    <title>📝 Mis Notas</title>
+    <style>
+        .nota {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        .botones {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>📝 Mis Notas</h1>
-        <ul id="listaNotas"></ul>
-        <a href="index.html"><button>Volver</button></a>
-    </div>
+    <h1>Mis Notas</h1>
+    <div id="listaNotas"></div>
+
     <script>
-        function cargarNotas() {
+        document.addEventListener("DOMContentLoaded", function () {
             let notas = JSON.parse(localStorage.getItem("notas")) || [];
-            let lista = document.getElementById("listaNotas");
-            lista.innerHTML = ""; // Limpiar antes de cargar
-            
+
+            let listaNotas = document.getElementById("listaNotas");
+            listaNotas.innerHTML = "";
+
             notas.forEach((nota, index) => {
-                let li = document.createElement("li");
-                li.innerText = `📌 ${nota}`;
-                lista.appendChild(li);
+                let divNota = document.createElement("div");
+                divNota.classList.add("nota");
+
+                divNota.innerHTML = `
+                    <h3>${nota.titulo}</h3>
+                    <p>${nota.texto}</p>
+                    <div class="botones">
+                        <button onclick="eliminarNota(${index})">Eliminar</button>
+                        <button onclick="modificarNota(${index})">Modificar</button>
+                    </div>
+                `;
+
+                listaNotas.appendChild(divNota);
             });
+        });
+
+        function eliminarNota(index) {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            notas.splice(index, 1);
+            localStorage.setItem("notas", JSON.stringify(notas));
+            location.reload();
         }
-        
-        window.onload = cargarNotas;
+
+        function modificarNota(index) {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let nuevoTitulo = prompt("Nuevo título:", notas[index].titulo);
+            let nuevoTexto = prompt("Nuevo contenido:", notas[index].texto);
+            if (nuevoTitulo !== null && nuevoTexto !== null) {
+                notas[index].titulo = nuevoTitulo;
+                notas[index].texto = nuevoTexto;
+                localStorage.setItem("notas", JSON.stringify(notas));
+                location.reload();
+            }
+        }
     </script>
 </body>
 </html>
