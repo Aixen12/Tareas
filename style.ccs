@@ -107,3 +107,17 @@ li {
 #formulario-modificar button:hover {
   background-color: #3e8e41;
 }
+
+#formulario-modificar textarea {
+    height: 200px; /* Alto del textarea */
+    overflow-y: auto; /* Barra de desplazamiento vertical */
+    resize: vertical; /* Permite redimensionar el textarea verticalmente */
+}
+
+#formulario-modificar textarea {
+    height: auto; /* Alto automático */
+    overflow-y: auto; /* Barra de desplazamiento vertical */
+    resize: vertical; /* Permite redimensionar el textarea verticalmente */
+    min-height: 100px; /* Alto mínimo */
+    max-height: 500px; /* Alto máximo */
+}
