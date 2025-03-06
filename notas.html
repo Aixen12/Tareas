@@ -4,7 +4,49 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Mis Notas</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        #formulario-modificar {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #f0f0f0;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #formulario-modificar h2 {
+            margin-top: 0;
+        }
+
+        #formulario-modificar label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        #formulario-modificar input, #formulario-modificar textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+        }
+
+        #formulario-modificar button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #formulario-modificar button:hover {
+            background-color: #3e8e41;
+        }
+    </style>
 </head>
 <body>
     <div class="container">
@@ -13,44 +55,67 @@
         <a href="index.html"><button>Volver</button></a>
     </div>
     <script>
-        // <script>
-    function cargarNotas() {
-        let notas = JSON.parse(localStorage.getItem("notas")) || [];
-        let lista = document.getElementById("listaNotas");
-        lista.innerHTML = ""; // Limpiar antes de cargar
+        function cargarNotas() {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let lista = document.getElementById("listaNotas");
+            lista.innerHTML = ""; // Limpiar antes de cargar
 
-        notas.forEach((nota, index) => {
-            let li = document.createElement("li");
-            li.innerHTML = `
-                 ${nota.titulo ? `<strong>${nota.titulo}:</strong> ${nota.texto}` : nota.texto}
-                <button onclick="eliminarNota(${index})">Eliminar</button>
-                <button onclick="modificarNota(${index})">Modificar</button>
-            `;
-            lista.appendChild(li);
-        });
-    }
+            notas.forEach((nota, index) => {
+                let li = document.createElement("li");
+                li.innerHTML = `
+                    ${nota.titulo? `<strong>${nota.titulo}:</strong> ${nota.texto}` : nota.texto}
+                    <button onclick="eliminarNota(${index})">Eliminar</button>
+                    <button onclick="modificarNota(${index})">Modificar</button>
+                `;
+                lista.appendChild(li);
+            });
+        }
 
-    function eliminarNota(index) {
-        let notas = JSON.parse(localStorage.getItem("notas")) || [];
-        notas.splice(index, 1);
-        localStorage.setItem("notas", JSON.stringify(notas));
-        cargarNotas(); // Recargar las notas
-    }
-
-    function modificarNota(index) {
-        let notas = JSON.parse(localStorage.getItem("notas")) || [];
-        let nuevoTitulo = prompt("Nuevo título:", notas[index].titulo || "");
-        let nuevoTexto = prompt("Nuevo contenido:", notas[index].texto);
-
-        if (nuevoTexto !== null) {
-            notas[index] = { titulo: nuevoTitulo, texto: nuevoTexto };
+        function eliminarNota(index) {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            notas.splice(index, 1);
             localStorage.setItem("notas", JSON.stringify(notas));
             cargarNotas(); // Recargar las notas
         }
-    }
 
-    window.onload = cargarNotas;
-</script>
+        function modificarNota(index) {
+            let notas = JSON.parse(localStorage.getItem("notas")) || [];
+            let nota = notas[index];
+
+            // Crear un formulario para modificar la nota
+            let formulario = document.createElement("div");
+            formulario.id = "formulario-modificar";
+            formulario.innerHTML = `
+                <h2>Modificar nota</h2>
+                <label for="titulo">Título:</label>
+                <input type="text" id="titulo" value="${nota.titulo || ""}"><br><br>
+                <label for="texto">Texto:</label>
+                <textarea id="texto">${nota.texto}</textarea><br><br>
+                <button onclick="guardarNota(${index})">Guardar</button>
+                <button onclick="cancelarModificacion()">Cancelar</button>
+            `;
+
+            // Agregar el formulario al documento
+            document.body.appendChild(formulario);
+
+            // Función para guardar la nota modificada
+            function guardarNota(index) {
+                let nuevoTitulo = document.getElementById("titulo").value;
+                let nuevoTexto = document.getElementById("texto").value;
+
+                notas[index] = { titulo: nuevoTitulo, texto: nuevoTexto };
+                localStorage.setItem("notas", JSON.stringify(notas));
+                cargarNotas(); // Recargar las notas
+                document.body.removeChild(formulario); // Eliminar el formulario
+            }
+
+            // Función para cancelar la modificación
+            function cancelarModificacion() {
+                document.body.removeChild(formulario); // Eliminar el formulario
+            }
+        }
+
+        window.onload = cargarNotas;
     </script>
 </body>
 </html>
